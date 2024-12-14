@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface FileSystemNodeRepository extends MongoRepository<FileSystemNode, ObjectId> {
+public interface FileSystemNodeRepository extends
+        MongoRepository<FileSystemNode, ObjectId>,
+        MongoTemplateFileSystemNodeRepository {
     List<FileSystemNode> findAllByParentId(ObjectId parentId);
 }
