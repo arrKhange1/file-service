@@ -15,14 +15,6 @@ public class MongoConfig {
     @Autowired
     private MongoClient mongoClient;
 
-    private MongoClient mongoClient() {
-        ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/test1");
-        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-        return MongoClients.create(mongoClientSettings);
-    }
-
     @Bean
     public MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoClient, "test1");
