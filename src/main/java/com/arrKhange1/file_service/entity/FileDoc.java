@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collation = "fs")
+@Document(collection = "fs")
 public class FileDoc extends FileSystemNode {
 
     private String description;
