@@ -7,6 +7,7 @@ import com.arrKhange1.file_service.repository.DirectoryDocRepository;
 import com.arrKhange1.file_service.repository.FileDocRepository;
 import com.arrKhange1.file_service.repository.FileSystemNodeRepository;
 import com.arrKhange1.file_service.util.UpdateDocumentUtil;
+import com.mongodb.lang.Nullable;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/fs-nodes")
 public class FileSystemNodeController {
 
@@ -73,7 +75,7 @@ public class FileSystemNodeController {
     }
 
     @GetMapping("")
-    public List<FileSystemNode> getNodes(@RequestParam ObjectId parentId) {
+    public List<FileSystemNode> getNodes(@RequestParam(required = false) ObjectId parentId) {
         return fileSystemNodeRepository.findAllByParentId(parentId);
     }
 
