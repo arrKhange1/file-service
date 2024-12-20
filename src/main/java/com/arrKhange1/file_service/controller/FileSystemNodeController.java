@@ -7,7 +7,6 @@ import com.arrKhange1.file_service.repository.DirectoryDocRepository;
 import com.arrKhange1.file_service.repository.FileDocRepository;
 import com.arrKhange1.file_service.repository.FileSystemNodeRepository;
 import com.arrKhange1.file_service.util.UpdateDocumentUtil;
-import com.mongodb.lang.Nullable;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,20 +52,12 @@ public class FileSystemNodeController {
 
     @PatchMapping("file/{fileId}")
     public void patchFile(@PathVariable("fileId") ObjectId fileId, @RequestBody FileDoc fileDoc) {
-        Query query = new Query().addCriteria(Criteria.where("id").is(fileId));
-        Document newFileDoc = new Document();
-        mongoTemplate.getConverter().write(fileDoc, newFileDoc);
-        Update upd = UpdateDocumentUtil.excludeNullFieldsFromDocuments(newFileDoc);
-        mongoTemplate.updateFirst(query, upd, FileDoc.class);
+        fileDocRepository.updateFileFieldsFrom(fileDoc, fileId);
     }
 
     @PatchMapping("directory/{directoryId}")
     public void patchFile(@PathVariable("directoryId") ObjectId directoryId, @RequestBody DirectoryDoc directoryDoc) {
-        Query query = new Query().addCriteria(Criteria.where("id").is(directoryId));
-        Document newDirectoryDoc = new Document();
-        mongoTemplate.getConverter().write(directoryDoc, newDirectoryDoc);
-        Update upd = UpdateDocumentUtil.excludeNullFieldsFromDocuments(newDirectoryDoc);
-        mongoTemplate.updateFirst(query, upd, DirectoryDoc.class);
+        directoryDocRepository.updateDirectoryFieldsFrom(directoryDoc, directoryId);
     }
 
     @DeleteMapping("{nodeId}")
@@ -78,6 +69,5 @@ public class FileSystemNodeController {
     public List<FileSystemNode> getNodes(@RequestParam(required = false) ObjectId parentId) {
         return fileSystemNodeRepository.findAllByParentId(parentId);
     }
-
 }
 
