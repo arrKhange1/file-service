@@ -19,7 +19,7 @@ public class MongoTemplateFileSystemNodeRepositoryImpl implements MongoTemplateF
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<FileSystemNode> deleteNodeByIdRecursive(ObjectId nodeId) {
+    public void deleteNodeByIdRecursive(ObjectId nodeId) {
         var graphLookUp = Aggregation.graphLookup("fs")
                 .startWith("parentId")
                 .connectFrom("parentId")
@@ -37,7 +37,5 @@ public class MongoTemplateFileSystemNodeRepositoryImpl implements MongoTemplateF
                 mongoTemplate.aggregate(finalAggregation, "fs", FileSystemNode.class).getMappedResults();
 
         fileSystemNodeRepository.deleteAll(nodesToDelete);
-
-        return nodesToDelete;
     }
 }
