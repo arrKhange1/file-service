@@ -10,10 +10,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@SuperBuilder
 @FieldNameConstants
-@Data
 @NoArgsConstructor
+@SuperBuilder
+@Data
 @Document(collection = "fs")
 public class FileSystemNode {
     @Id

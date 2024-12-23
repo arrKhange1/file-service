@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Data
 @NoArgsConstructor
+@Data
 @Document(collection = "fs")
 public class FileDoc extends FileSystemNode {
     private String description;
