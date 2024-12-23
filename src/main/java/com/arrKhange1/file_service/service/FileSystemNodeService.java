@@ -6,6 +6,7 @@ import com.arrKhange1.file_service.entity.FileSystemNode;
 import com.arrKhange1.file_service.repository.DirectoryDocRepository;
 import com.arrKhange1.file_service.repository.FileDocRepository;
 import com.arrKhange1.file_service.repository.FileSystemNodeRepository;
+import com.arrKhange1.file_service.type.FileSystemNodeType;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class FileSystemNodeService {
-    @Autowired
-    private FileSystemNodeRepository fileSystemNodeRepository;
-
-    @Autowired
-    private DirectoryDocRepository directoryDocRepository;
-
-    @Autowired
-    private FileDocRepository fileDocRepository;
+    private final FileSystemNodeRepository fileSystemNodeRepository;
+    private final DirectoryDocRepository directoryDocRepository;
+    private final FileDocRepository fileDocRepository;
 
     public void addFile(FileDoc fileDoc) {
+        fileDoc.setType(FileSystemNodeType.FILE.name());
         fileDocRepository.save(fileDoc);
     }
 

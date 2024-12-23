@@ -10,6 +10,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document(collection = "fs")
 public class FileDoc extends FileSystemNode {
-
     private String description;
 }

@@ -4,8 +4,8 @@ import com.arrKhange1.file_service.entity.DirectoryDoc;
 import com.arrKhange1.file_service.entity.FileDoc;
 import com.arrKhange1.file_service.entity.FileSystemNode;
 import com.arrKhange1.file_service.service.FileSystemNodeService;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,16 +13,25 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/fs-nodes")
+@RequiredArgsConstructor
 public class FileSystemNodeController {
 
-    @Autowired
-    private FileSystemNodeService fileSystemNodeService;
+    private final FileSystemNodeService fileSystemNodeService;
 
+    /*
+     type - необязательно. если передается, надо проверить его. а так type сетится автоматически
+     parentId - необязательно
+     description - необязательно
+     + надо проверить, что входящий объект удовлетворяет схеме документа
+    * */
     @PostMapping("file")
     public void addFile(@RequestBody FileDoc fileDoc) {
         fileSystemNodeService.addFile(fileDoc);
     }
 
+    /*
+     parentId не может быть с type = FILE
+    * */
     @PostMapping("directory")
     public void addDirectory(@RequestBody DirectoryDoc directoryDoc) {
         fileSystemNodeService.addDirectory(directoryDoc);
