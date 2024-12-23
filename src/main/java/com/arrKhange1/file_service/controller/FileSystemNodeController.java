@@ -1,13 +1,12 @@
 package com.arrKhange1.file_service.controller;
 
-import com.arrKhange1.file_service.dto.AddDirectoryRequestDTO;
-import com.arrKhange1.file_service.dto.AddFileRequestDTO;
+import com.arrKhange1.file_service.dto.DirectoryMutationRequestDTO;
+import com.arrKhange1.file_service.dto.FileMutationRequestDTO;
 import com.arrKhange1.file_service.entity.DirectoryDoc;
 import com.arrKhange1.file_service.entity.FileDoc;
 import com.arrKhange1.file_service.entity.FileSystemNode;
 import com.arrKhange1.file_service.mapper.FileSystemNodeMapper;
 import com.arrKhange1.file_service.service.FileSystemNodeService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +30,10 @@ public class FileSystemNodeController {
      + надо проверить, что входящий объект удовлетворяет схеме документа
     * */
     @PostMapping("file")
-    public void addFile(@Valid @RequestBody AddFileRequestDTO fileRequestDTO) {
-        FileDoc fileDoc = fileSystemNodeMapper.fromAddFileRequestDTO(fileRequestDTO);
+    public void addFile(
+            @Validated({FileMutationRequestDTO.AddValidation.class})
+            @RequestBody FileMutationRequestDTO fileRequestDTO) {
+        FileDoc fileDoc = fileSystemNodeMapper.fromFileMutationRequestDTO(fileRequestDTO);
         fileSystemNodeService.addFile(fileDoc);
     }
 
@@ -40,18 +41,24 @@ public class FileSystemNodeController {
      parentId не может быть с type = FILE
     * */
     @PostMapping("directory")
-    public void addDirectory(@RequestBody AddDirectoryRequestDTO directoryRequestDTO) {
-        DirectoryDoc directoryDoc = fileSystemNodeMapper.fromAddDirectoryRequestDTO(directoryRequestDTO);
+    public void addDirectory(@RequestBody DirectoryMutationRequestDTO directoryRequestDTO) {
+        DirectoryDoc directoryDoc = fileSystemNodeMapper.fromDirectoryMutationRequestDTO(directoryRequestDTO);
         fileSystemNodeService.addDirectory(directoryDoc);
     }
 
     @PatchMapping("file/{fileId}")
-    public void patchFile(@RequestBody FileDoc fileDoc, @PathVariable("fileId") ObjectId fileId) {
+    public void patchFile(
+            @Validated({FileMutationRequestDTO.PatchValidation.class})
+            @RequestBody FileMutationRequestDTO fileRequestDTO,
+            @PathVariable("fileId") ObjectId fileId) {
+        FileDoc fileDoc = fileSystemNodeMapper.fromFileMutationRequestDTO(fileRequestDTO);
         fileSystemNodeService.updateFileFieldsFrom(fileDoc, fileId);
     }
 
     @PatchMapping("directory/{directoryId}")
-    public void patchFile(@RequestBody DirectoryDoc directoryDoc, @PathVariable("directoryId") ObjectId directoryId) {
+    public void patchDirectory(@RequestBody DirectoryMutationRequestDTO directoryRequestDTO,
+                               @PathVariable("directoryId") ObjectId directoryId) {
+        DirectoryDoc directoryDoc = fileSystemNodeMapper.fromDirectoryMutationRequestDTO(directoryRequestDTO);
         fileSystemNodeService.updateDirectoryFieldsFrom(directoryDoc, directoryId);
     }
 
