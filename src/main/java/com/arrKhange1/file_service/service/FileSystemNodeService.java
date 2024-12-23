@@ -66,6 +66,7 @@ public class FileSystemNodeService {
     }
 
     public void deleteNodeByIdRecursive(ObjectId nodeId) {
+        nodeExistById(nodeId);
         fileSystemNodeRepository.deleteNodeByIdRecursive(nodeId);
     }
 

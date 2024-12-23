@@ -40,7 +40,6 @@ public class FileSystemNodeController {
         fileSystemNodeService.addDirectory(directoryDoc);
     }
 
-//    проверять, что переданный ID реально file или directory
     @PatchMapping("file/{fileId}")
     public void patchFile(
             @RequestBody FileMutationRequestDTO fileRequestDTO,
@@ -59,7 +58,9 @@ public class FileSystemNodeController {
 
     // TODO: проверять есть ли такой id перед удалением
     @DeleteMapping("{nodeId}")
-    public void deleteNode(@PathVariable("nodeId") ObjectId nodeId) {
+    public void deleteNode(
+            @NotNull(message = "Patching directory can't be null")
+            @PathVariable("nodeId") ObjectId nodeId) {
         fileSystemNodeService.deleteNodeByIdRecursive(nodeId);
     }
 
