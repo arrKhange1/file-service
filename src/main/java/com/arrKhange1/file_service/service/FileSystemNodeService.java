@@ -23,8 +23,13 @@ public class FileSystemNodeService {
     private final DirectoryDocRepository directoryDocRepository;
     private final FileDocRepository fileDocRepository;
 
+    // move validation logic to dedicated FileSystemNodeValidationService
     private boolean isFileSystemNodeDirectory(FileSystemNode fileSystemNode) {
         return Objects.equals(fileSystemNode.getType(), FileSystemNodeType.DIRECTORY.name());
+    }
+
+    private void nodeExistById(ObjectId id) {
+        if (!fileSystemNodeRepository.existsById(id)) throw new RuntimeException(String.format("Node with ID %s doesn't exist", id));
     }
 
     private void validateNodeParent(ObjectId parentId) {
@@ -32,7 +37,7 @@ public class FileSystemNodeService {
             Optional<FileSystemNode> fileSystemNode = fileSystemNodeRepository.findById(parentId);
             if (fileSystemNode.isEmpty()) throw new RuntimeException(String.format("Couldn't find node with ID: %s", parentId));
             if (!isFileSystemNodeDirectory(fileSystemNode.get())) throw new RuntimeException("Only directory can be a parental node");
-            if (fileSystemNode.get().get_id() == parentId) throw new RuntimeException("Node can't be a parent of itself");
+            if (fileSystemNode.get().get_id().equals(parentId)) throw new RuntimeException("Node can't be a parent of itself");
         }
     }
 
@@ -49,10 +54,14 @@ public class FileSystemNodeService {
     }
 
     public void updateFileFieldsFrom(FileDoc fileFields, ObjectId fileId) {
+        nodeExistById(fileId);
+        validateNodeParent(fileFields.getParentId());
         fileDocRepository.updateFileFieldsFrom(fileFields, fileId);
     }
 
     public void updateDirectoryFieldsFrom(DirectoryDoc directoryFields, ObjectId directoryId) {
+        nodeExistById(directoryId);
+        validateNodeParent(directoryFields.getParentId());
         directoryDocRepository.updateDirectoryFieldsFrom(directoryFields, directoryId);
     }
 

@@ -7,6 +7,7 @@ import com.arrKhange1.file_service.entity.FileDoc;
 import com.arrKhange1.file_service.entity.FileSystemNode;
 import com.arrKhange1.file_service.mapper.FileSystemNodeMapper;
 import com.arrKhange1.file_service.service.FileSystemNodeService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +24,6 @@ public class FileSystemNodeController {
     private final FileSystemNodeService fileSystemNodeService;
     private final FileSystemNodeMapper fileSystemNodeMapper;
 
-    /*
-     parentId не может быть с type = FILE
-    * */
     @PostMapping("file")
     public void addFile(
             @Validated({FileMutationRequestDTO.AddValidation.class})
@@ -34,9 +32,6 @@ public class FileSystemNodeController {
         fileSystemNodeService.addFile(fileDoc);
     }
 
-    /*
-     parentId не может быть с type = FILE
-    * */
     @PostMapping("directory")
     public void addDirectory(
             @Validated({DirectoryMutationRequestDTO.AddValidation.class})
@@ -45,18 +40,19 @@ public class FileSystemNodeController {
         fileSystemNodeService.addDirectory(directoryDoc);
     }
 
+//    проверять, что переданный ID реально file или directory
     @PatchMapping("file/{fileId}")
     public void patchFile(
-            @Validated({FileMutationRequestDTO.PatchValidation.class})
             @RequestBody FileMutationRequestDTO fileRequestDTO,
-            @PathVariable("fileId") ObjectId fileId) {
+            @NotNull(message = "Patching file can't be null") @PathVariable("fileId") ObjectId fileId) {
         FileDoc fileDoc = fileSystemNodeMapper.fromFileMutationRequestDTO(fileRequestDTO);
         fileSystemNodeService.updateFileFieldsFrom(fileDoc, fileId);
     }
 
     @PatchMapping("directory/{directoryId}")
-    public void patchDirectory(@RequestBody DirectoryMutationRequestDTO directoryRequestDTO,
-                               @PathVariable("directoryId") ObjectId directoryId) {
+    public void patchDirectory(
+            @RequestBody DirectoryMutationRequestDTO directoryRequestDTO,
+            @NotNull(message = "Patching directory can't be null") @PathVariable("directoryId") ObjectId directoryId) {
         DirectoryDoc directoryDoc = fileSystemNodeMapper.fromDirectoryMutationRequestDTO(directoryRequestDTO);
         fileSystemNodeService.updateDirectoryFieldsFrom(directoryDoc, directoryId);
     }

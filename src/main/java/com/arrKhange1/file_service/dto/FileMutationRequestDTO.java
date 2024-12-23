@@ -10,5 +10,4 @@ public record FileMutationRequestDTO(
      ObjectId parentId
 )  {
      public interface AddValidation {}
-     public interface PatchValidation {}
 }
