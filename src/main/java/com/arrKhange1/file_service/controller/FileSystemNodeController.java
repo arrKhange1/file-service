@@ -24,10 +24,7 @@ public class FileSystemNodeController {
     private final FileSystemNodeMapper fileSystemNodeMapper;
 
     /*
-     type - необязательно. если передается, надо проверить его. а так type сетится автоматически
-     parentId - необязательно
-     description - необязательно
-     + надо проверить, что входящий объект удовлетворяет схеме документа
+     parentId не может быть с type = FILE
     * */
     @PostMapping("file")
     public void addFile(
@@ -41,7 +38,9 @@ public class FileSystemNodeController {
      parentId не может быть с type = FILE
     * */
     @PostMapping("directory")
-    public void addDirectory(@RequestBody DirectoryMutationRequestDTO directoryRequestDTO) {
+    public void addDirectory(
+            @Validated({DirectoryMutationRequestDTO.AddValidation.class})
+            @RequestBody DirectoryMutationRequestDTO directoryRequestDTO) {
         DirectoryDoc directoryDoc = fileSystemNodeMapper.fromDirectoryMutationRequestDTO(directoryRequestDTO);
         fileSystemNodeService.addDirectory(directoryDoc);
     }

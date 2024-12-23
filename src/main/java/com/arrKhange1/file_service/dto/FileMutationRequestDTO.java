@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.bson.types.ObjectId;
 
 public record FileMutationRequestDTO(
-     @NotBlank(message = "Name is mandatory", groups = AddValidation.class)
+     @NotBlank(message = "Filename is mandatory", groups = AddValidation.class)
      String name,
      String description,
      ObjectId parentId
