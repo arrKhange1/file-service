@@ -1,13 +1,13 @@
 package com.arrKhange1.file_service.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@Data
+@NoArgsConstructor
 @Document(collection = "fs")
 public class FileDoc extends FileSystemNode {
     private String description;

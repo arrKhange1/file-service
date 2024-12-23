@@ -2,17 +2,18 @@ package com.arrKhange1.file_service.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@SuperBuilder
 @FieldNameConstants
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Document(collection = "fs")
 public class FileSystemNode {
     @Id
