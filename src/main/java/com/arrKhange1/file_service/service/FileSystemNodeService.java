@@ -3,13 +3,13 @@ package com.arrKhange1.file_service.service;
 import com.arrKhange1.file_service.entity.DirectoryDoc;
 import com.arrKhange1.file_service.entity.FileDoc;
 import com.arrKhange1.file_service.entity.FileSystemNode;
+import com.arrKhange1.file_service.exception.FileSystemNodeException;
 import com.arrKhange1.file_service.repository.DirectoryDocRepository;
 import com.arrKhange1.file_service.repository.FileDocRepository;
 import com.arrKhange1.file_service.repository.FileSystemNodeRepository;
 import com.arrKhange1.file_service.type.FileSystemNodeType;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,15 +29,15 @@ public class FileSystemNodeService {
     }
 
     private void nodeExistById(ObjectId id) {
-        if (!fileSystemNodeRepository.existsById(id)) throw new RuntimeException(String.format("Node with ID %s doesn't exist", id));
+        if (!fileSystemNodeRepository.existsById(id)) throw new FileSystemNodeException(String.format("Node with ID %s doesn't exist", id));
     }
 
     private void validateNodeParent(ObjectId parentId) {
         if (parentId != null) {
             Optional<FileSystemNode> fileSystemNode = fileSystemNodeRepository.findById(parentId);
-            if (fileSystemNode.isEmpty()) throw new RuntimeException(String.format("Couldn't find node with ID: %s", parentId));
-            if (!isFileSystemNodeDirectory(fileSystemNode.get())) throw new RuntimeException("Only directory can be a parental node");
-            if (fileSystemNode.get().get_id().equals(parentId)) throw new RuntimeException("Node can't be a parent of itself");
+            if (fileSystemNode.isEmpty()) throw new FileSystemNodeException(String.format("Couldn't find node with ID: %s", parentId));
+            if (!isFileSystemNodeDirectory(fileSystemNode.get())) throw new FileSystemNodeException("Only directory can be a parental node");
+            if (fileSystemNode.get().get_id().equals(parentId)) throw new FileSystemNodeException("Node can't be a parent of itself");
         }
     }
 

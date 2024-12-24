@@ -56,7 +56,6 @@ public class FileSystemNodeController {
         fileSystemNodeService.updateDirectoryFieldsFrom(directoryDoc, directoryId);
     }
 
-    // TODO: проверять есть ли такой id перед удалением
     @DeleteMapping("{nodeId}")
     public void deleteNode(
             @NotNull(message = "Patching directory can't be null")
