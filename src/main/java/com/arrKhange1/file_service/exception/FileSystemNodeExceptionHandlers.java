@@ -16,11 +16,14 @@ import java.util.Map;
 
 @ControllerAdvice
 public class FileSystemNodeExceptionHandlers extends ResponseEntityExceptionHandler  {
-    @ExceptionHandler({
-            FileSystemNodeException.class,
-    })
-    public ResponseEntity<?> handleFileSystemNodeException(Exception exception, WebRequest request) {
+    @ExceptionHandler(GeneralFileSystemNodeException.class)
+    public ResponseEntity<?> handleGeneralFileSystemNodeException(GeneralFileSystemNodeException exception, WebRequest request) {
         return new ResponseEntity<>(new ErrorDTO(exception.getMessage(), new HashMap<>()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NodeNotFoundException.class)
+    public ResponseEntity<?> handleNodeNotFound(NodeNotFoundException exception, WebRequest request) {
+        return new ResponseEntity<>(new ErrorDTO(exception.getMessage(), new HashMap<>()), HttpStatus.NOT_FOUND);
     }
 
     @Override
