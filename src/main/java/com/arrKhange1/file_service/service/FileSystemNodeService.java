@@ -25,16 +25,16 @@ public class FileSystemNodeService {
     private final FileDocRepository fileDocRepository;
     private final FileSystemNodeValidationService fileSystemNodeValidationService;
 
-    public void addFile(FileDoc fileDoc) {
+    public FileDoc addFile(FileDoc fileDoc) {
         fileSystemNodeValidationService.validateNodeParent(fileDoc.getParentId());
         fileDoc.setType(FileSystemNodeType.FILE.name());
-        fileDocRepository.save(fileDoc);
+        return fileDocRepository.save(fileDoc);
     }
 
-    public void addDirectory(DirectoryDoc directoryDoc) {
+    public DirectoryDoc addDirectory(DirectoryDoc directoryDoc) {
         fileSystemNodeValidationService.validateNodeParent(directoryDoc.getParentId());
         directoryDoc.setType(FileSystemNodeType.DIRECTORY.name());
-        directoryDocRepository.save(directoryDoc);
+        return directoryDocRepository.save(directoryDoc);
     }
 
     public void updateFileFieldsFrom(FileDoc fileFields, ObjectId fileId) {

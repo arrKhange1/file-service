@@ -25,19 +25,19 @@ public class FileSystemNodeController {
     private final FileSystemNodeMapper fileSystemNodeMapper;
 
     @PostMapping("file")
-    public void addFile(
+    public FileDoc addFile(
             @Validated({FileMutationRequestDTO.AddValidation.class})
             @RequestBody FileMutationRequestDTO fileRequestDTO) {
         FileDoc fileDoc = fileSystemNodeMapper.fromFileMutationRequestDTO(fileRequestDTO);
-        fileSystemNodeService.addFile(fileDoc);
+        return fileSystemNodeService.addFile(fileDoc);
     }
 
     @PostMapping("directory")
-    public void addDirectory(
+    public DirectoryDoc addDirectory(
             @Validated({DirectoryMutationRequestDTO.AddValidation.class})
             @RequestBody DirectoryMutationRequestDTO directoryRequestDTO) {
         DirectoryDoc directoryDoc = fileSystemNodeMapper.fromDirectoryMutationRequestDTO(directoryRequestDTO);
-        fileSystemNodeService.addDirectory(directoryDoc);
+        return fileSystemNodeService.addDirectory(directoryDoc);
     }
 
     @PatchMapping("file/{fileId}")
