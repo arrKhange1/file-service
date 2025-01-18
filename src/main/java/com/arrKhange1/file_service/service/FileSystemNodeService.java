@@ -40,12 +40,14 @@ public class FileSystemNodeService {
     public void updateFileFieldsFrom(FileDoc fileFields, ObjectId fileId) {
         fileSystemNodeValidationService.nodeExistById(fileId);
         fileSystemNodeValidationService.validateNodeParent(fileFields.getParentId());
+        fileSystemNodeValidationService.nodeEqualToParent(fileId, fileFields.getParentId());
         fileDocRepository.updateFileFieldsFrom(fileFields, fileId);
     }
 
     public void updateDirectoryFieldsFrom(DirectoryDoc directoryFields, ObjectId directoryId) {
         fileSystemNodeValidationService.nodeExistById(directoryId);
         fileSystemNodeValidationService.validateNodeParent(directoryFields.getParentId());
+        fileSystemNodeValidationService.nodeEqualToParent(directoryId, directoryFields.getParentId());
         directoryDocRepository.updateDirectoryFieldsFrom(directoryFields, directoryId);
     }
 
